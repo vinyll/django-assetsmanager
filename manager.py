@@ -89,4 +89,9 @@ def get_loaded_assets_tag(type):
         tags += tag_pattern.replace('%file%', file)+os.linesep
     return tags
         
-        
+
+def clear():
+    """
+    clears bundles data
+    """
+    loaded_bundle_names = []

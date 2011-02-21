@@ -10,7 +10,12 @@ class AssetsMiddleware(object):
         manager.bundles = user_settings.ASSETS_MANAGER_BUNDLES
     
     
+    ""
     def process_response(self, request, response):
+        """
+        Replaces assets_managet tmp tags with assets values
+        Clears the manager bundles
+        """
         # exit for files other than a webpage
         if not response.status_code == 200 or not response['Content-Type'].split(';')[0] in settings.HTML_RESPONSE_TYPES:
             return response
@@ -20,4 +25,5 @@ class AssetsMiddleware(object):
         js_tags = manager.get_loaded_assets_tag('js')
         response.content = response.content.replace(settings.ASSETS_MANAGER_CSS_TEMP_TAG, css_tags)\
                                            .replace(settings.ASSETS_MANAGER_JS_TEMP_TAG, js_tags)
+        manager.clear()
         return response

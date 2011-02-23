@@ -16,6 +16,7 @@ manager.bundles = {
   }
 }
 """
+import assetsmanager
 bundles = {}
 
 """
@@ -94,4 +95,4 @@ def clear():
     """
     clears bundles data
     """
-    loaded_bundle_names = []
+    assetsmanager.manager.loaded_bundle_names = []

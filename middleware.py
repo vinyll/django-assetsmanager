@@ -7,10 +7,12 @@ class AssetsMiddleware(object):
     
     
     def __init__(self):
+        """
+        Loads available bundles from django conf settings
+        """
         manager.bundles = user_settings.ASSETS_MANAGER_BUNDLES
     
     
-    ""
     def process_response(self, request, response):
         """
         Replaces assets_managet tmp tags with assets values

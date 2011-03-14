@@ -19,7 +19,7 @@ class AssetsMiddleware(object):
         Clears the manager bundles
         """
         # exit for files other than a webpage
-        if not response.status_code == 200 or not response['Content-Type'].split(';')[0] in settings.HTML_RESPONSE_TYPES:
+        if not response['Content-Type'].split(';')[0] in settings.HTML_RESPONSE_TYPES:
             return response
         
         # replace tags

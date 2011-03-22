@@ -1,0 +1,44 @@
+## Installation
+
+git clone git://github.com/vinyll/django-assetsmanager.git assetsmanager
+
+
+settings.py
+
+MIDDLEWARE_CLASSES = (
+    …
+    'assetsmanager.middleware.AssetsMiddleware',
+)
+
+ASSETS_MANAGER_BUNDLES = {
+  'bundle1': {
+    'css': ('my_css1.css', 'my_css2.css'),
+    'js':  ('my_js1.js', 'my_js2.js')
+  },
+  'bundle2': {
+    'css': ('my_css3.css', 'my_css4.css'),
+    'js':  ('my_js3.js', 'my_js4.js')
+  }
+}
+
+
+## Basic Usage
+
+## Base template
+
+    <html>
+    <head>
+        {% print_assets 'css' %}
+        {% print_assets 'js' %}
+    </head>
+    <body></body>
+    </html>
+
+## Template usage
+
+    {% load assets %}
+    {% block body %}
+    {% load_assets 'bundle1' %}
+    …
+    {% endblock %}
+

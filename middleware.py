@@ -7,17 +7,19 @@ class AssetsMiddleware(object):
     
     
     def __init__(self):
+        """
+        Loads available bundles from django conf settings
+        """
         manager.bundles = user_settings.ASSETS_MANAGER_BUNDLES
     
     
-    ""
     def process_response(self, request, response):
         """
         Replaces assets_managet tmp tags with assets values
         Clears the manager bundles
         """
         # exit for files other than a webpage
-        if not response.status_code == 200 or not response['Content-Type'].split(';')[0] in settings.HTML_RESPONSE_TYPES:
+        if not response['Content-Type'].split(';')[0] in settings.HTML_RESPONSE_TYPES:
             return response
         
         # replace tags

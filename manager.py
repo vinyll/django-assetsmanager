@@ -29,52 +29,91 @@ def load_bundle(name):
     """
     load a bundle by its name
     """
-    print 'loading bundle %s' % name
     if name in loaded_bundle_names:
         return False
+    bundle = get_bundle(name)
     try:
-        bundle = bundles[name]
-        try:
-            imports = bundle['import']
-            if isinstance(imports, str):
-                load_bundle(imports)
-            else:
-                for imp in imports:
-                    load_bundle(imp)
-        except:
-            pass
+        imports = bundle['import']
+        if isinstance(imports, str):
+            load_bundle(imports)
+        else:
+            for imp in imports:
+                load_bundle(imp)
     except KeyError:
-        raise RuntimeError('No asset bundle called "%s" found' % name)
+        pass
     loaded_bundle_names.append(name)
-    
+
+
+def get_bundle(bundle_name):
+    """
+    return a bundle by its name
+    """
+    try:
+        return bundles[bundle_name]
+    except KeyError:
+        raise RuntimeError('No asset bundle called "%s" found' % bundle_name)
     
 def get_loaded_bundles():
     """
     retrieve a dict of loaded bundles
     """
     loaded = []
+    loaded_names = []
     for bundle_name in loaded_bundle_names:
-        loaded.append(bundles[bundle_name])
+        if not bundle_name in loaded_names:
+            loaded_names.append(bundle_name)
+            loaded.append(bundles[bundle_name])
     return loaded
-    
-    
+
+def get_assets_for_bundle_name(bundle_name, type):
+    """
+    Retrieves a list of files for a specific bundle name
+    bundle_name: str representing the name of the bundle to read 
+    type: css or os
+    """
+    return get_assets_for_bundle(get_bundle(bundle_name), type)
+        
+
+def get_assets_for_bundle(bundle, type):
+    """
+    Retrieves a list of files for a specific bundle
+    bundle: dict containing cleaned assets informations
+    type: css or os
+    """
+    files = []
+    try:
+        imports = bundle['import']
+        if isinstance(imports, str):
+            files.extend(get_assets_for_bundle_name(imports, type))
+        else:
+            for imp in imports:
+                files.extend(get_assets_for_bundle_name(imp, type))
+    except KeyError:
+        pass
+    try:
+        bundle_typed = bundle[type]
+        if isinstance(bundle_typed, str):
+            files.append(bundle_typed)
+        else:
+            for file in bundle_typed:
+                files.append(file)
+    except KeyError:
+        pass
+    return files
+
 def get_loaded_assets(type):
     """
     retreive all assets file name by their type
     returns a list
     """
     loaded = get_loaded_bundles()
+    dirty_files = []
     files = []
     for bundle in loaded:
-        try:
-            bundle_typed = bundle[type]
-            if isinstance(bundle_typed, str):
-                files.append(bundle_typed)
-            else:
-                for file in bundle_typed:
-                    files.append(file)
-        except KeyError:
-            pass
+        dirty_files.extend(get_assets_for_bundle(bundle, type))
+    for file in dirty_files:
+        if not file in files:
+            files.append(file)
     return files
 
 

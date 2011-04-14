@@ -80,6 +80,8 @@ def get_assets_for_bundle(bundle, type):
     bundle: dict containing cleaned assets informations
     type: css or os
     """
+    if not isinstance(bundle, dict):
+        raise TypeError('get_assets_for_bundle requires bundle arg to be a dict type.') 
     files = []
     try:
         imports = bundle['import']

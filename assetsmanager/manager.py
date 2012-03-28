@@ -2,8 +2,8 @@ from assetsmanager.conf import settings
 import os
 
 """
-This dict should hold all available bundles.
-It should look like this :
+This dict should hold all available bundles
+and should be formatted this way :
 form assetsmanager import manager
 manager.bundles = {
   'bundle1': {
@@ -126,7 +126,7 @@ def get_loaded_assets_tag(type):
     """
     files = get_loaded_assets(type) or []
     tags = ''
-    tag_pattern = eval('settings.ASSETS_MANAGER_%s_TAG' % type.upper())
+    tag_pattern = getattr(settings, 'ASSETS_MANAGER_%s_TAG' % type.upper())
     for file in files:
         tags += tag_pattern.replace('%file%', file)+os.linesep
     return tags

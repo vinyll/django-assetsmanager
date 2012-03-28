@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='django-assetsmanager',
+    name='assetsmanager',
     version='1.1.0',
     description='Django app to easily manage and your js and css dependencies.',
     long_description="""Django assets manager allows you to classify stylesheet and javascript files 

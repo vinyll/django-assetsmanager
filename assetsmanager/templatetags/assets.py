@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.simple_tag
 def print_assets(type):
-    return eval('settings.ASSETS_MANAGER_%s_TEMP_TAG' % type.upper())
+    return getattr(settings, 'ASSETS_MANAGER_%s_TEMP_TAG' % type.upper())
     
 @register.simple_tag
 def load_assets(bundle):
